@@ -1,0 +1,46 @@
+{
+  "canvas": "750rpx",
+  "colors": {
+    "#000000": {"name": "black", "hex": "#000000"}
+  },
+  "tree": [
+    {
+      "tag": "view",
+      "classes": ["page"],
+      "widgets": {"android": "LinearLayout[vertical]", "ios": "VStack", "flutter": "Column"},
+      "style": {"width": "match_parent", "height": 640},
+      "children": [
+        {
+          "tag": "view",
+          "classes": ["status_bar"],
+          "widgets": {"android": "LinearLayout[horizontal]", "ios": "HStack", "flutter": "Row"},
+          "style": {"width": "match_parent", "height": 22},
+          "children": [
+            {
+              "tag": "text",
+              "classes": ["time"],
+              "widgets": {"android": "TextView", "ios": "Text", "flutter": "Text"},
+              "style": {"font-size": 12, "color": "#000000"},
+              "text": "14:01"
+            }
+          ]
+        },
+        {
+          "tag": "view",
+          "classes": ["toolbar"],
+          "widgets": {"android": "LinearLayout[horizontal]", "ios": "HStack", "flutter": "Row"},
+          "style": {"width": "match_parent", "height": 44},
+          "children": [
+            {
+              "tag": "text",
+              "classes": ["title"],
+              "widgets": {"android": "TextView", "ios": "Text", "flutter": "Text"},
+              "style": {"font-size": 17, "color": "#000000"},
+              "text": "Management"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

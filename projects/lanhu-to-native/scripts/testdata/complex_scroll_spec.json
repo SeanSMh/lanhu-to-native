@@ -1,0 +1,108 @@
+{
+  "colors": {
+    "#FFFFFF": {
+      "name": "white",
+      "hex": "#FFFFFF"
+    },
+    "#333333": {
+      "name": "text_primary",
+      "hex": "#333333"
+    },
+    "#FFAA00": {
+      "name": "warning_orange",
+      "hex": "#FFAA00"
+    },
+    "#0080FF": {
+      "name": "blue",
+      "hex": "#0080FF"
+    }
+  },
+  "tree": [
+    {
+      "tag": "view",
+      "widgets": {
+        "android": "LinearLayout[vertical]",
+        "ios": "VStack",
+        "flutter": "Column"
+      },
+      "style": {
+        "width": "match_parent",
+        "padding": {
+          "top": 12,
+          "right": 16,
+          "bottom": 12,
+          "left": 16
+        }
+      },
+      "children": [
+        {
+          "tag": "text",
+          "widgets": {
+            "android": "TextView",
+            "ios": "Text",
+            "flutter": "Text"
+          },
+          "style": {
+            "font-size": 20,
+            "line-height": 28,
+            "font-weight": 700,
+            "text-align": "center",
+            "color": "#333333"
+          },
+          "text": "样式验证"
+        },
+        {
+          "tag": "scroll-view",
+          "widgets": {
+            "android": "ScrollView",
+            "ios": "ScrollView",
+            "flutter": "SingleChildScrollView"
+          },
+          "style": {
+            "width": "match_parent",
+            "height": 120,
+            "flex-direction": "row",
+            "background": "linear-gradient(90deg, #FFFFFF 0%, #0080FF 100%)",
+            "box-shadow": "0 4 12 #333333",
+            "border-radius": 16,
+            "opacity": 0.9,
+            "padding": {
+              "top": 12,
+              "right": 12,
+              "bottom": 12,
+              "left": 12
+            }
+          },
+          "children": [
+            {
+              "tag": "button",
+              "widgets": {
+                "android": "MaterialButton",
+                "ios": "Button",
+                "flutter": "ElevatedButton"
+              },
+              "style": {
+                "width": 100,
+                "height": 40
+              },
+              "text": "卡片一"
+            },
+            {
+              "tag": "button",
+              "widgets": {
+                "android": "MaterialButton",
+                "ios": "Button",
+                "flutter": "ElevatedButton"
+              },
+              "style": {
+                "width": 100,
+                "height": 40
+              },
+              "text": "卡片二"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

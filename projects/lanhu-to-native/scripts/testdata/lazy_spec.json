@@ -1,0 +1,109 @@
+{
+  "colors": {
+    "#FFFFFF": {
+      "name": "white",
+      "hex": "#FFFFFF"
+    },
+    "#333333": {
+      "name": "text_primary",
+      "hex": "#333333"
+    }
+  },
+  "tree": [
+    {
+      "tag": "view",
+      "widgets": {
+        "android": "LinearLayout[vertical]",
+        "ios": "VStack",
+        "flutter": "Column"
+      },
+      "style": {
+        "width": "match_parent",
+        "background-color": "#FFFFFF"
+      },
+      "children": [
+        {
+          "tag": "view",
+          "widgets": {
+            "android": "LinearLayout[vertical]",
+            "ios": "VStack",
+            "flutter": "Column"
+          },
+          "style": {
+            "width": "match_parent",
+            "height": 80
+          },
+          "children": [
+            {
+              "tag": "text",
+              "widgets": {
+                "android": "TextView",
+                "ios": "Text",
+                "flutter": "Text"
+              },
+              "style": {
+                "font-size": 16,
+                "color": "#333333"
+              },
+              "text": "A"
+            }
+          ]
+        },
+        {
+          "tag": "view",
+          "widgets": {
+            "android": "LinearLayout[vertical]",
+            "ios": "VStack",
+            "flutter": "Column"
+          },
+          "style": {
+            "width": "match_parent",
+            "height": 80
+          },
+          "children": [
+            {
+              "tag": "text",
+              "widgets": {
+                "android": "TextView",
+                "ios": "Text",
+                "flutter": "Text"
+              },
+              "style": {
+                "font-size": 16,
+                "color": "#333333"
+              },
+              "text": "B"
+            }
+          ]
+        },
+        {
+          "tag": "view",
+          "widgets": {
+            "android": "LinearLayout[vertical]",
+            "ios": "VStack",
+            "flutter": "Column"
+          },
+          "style": {
+            "width": "match_parent",
+            "height": 80
+          },
+          "children": [
+            {
+              "tag": "text",
+              "widgets": {
+                "android": "TextView",
+                "ios": "Text",
+                "flutter": "Text"
+              },
+              "style": {
+                "font-size": 16,
+                "color": "#333333"
+              },
+              "text": "C"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

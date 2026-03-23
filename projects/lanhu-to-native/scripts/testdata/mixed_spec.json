@@ -1,0 +1,187 @@
+{
+  "colors": {
+    "#FFFFFF": {
+      "name": "white",
+      "hex": "#FFFFFF"
+    },
+    "#333333": {
+      "name": "text_primary",
+      "hex": "#333333"
+    }
+  },
+  "tree": [
+    {
+      "tag": "view",
+      "widgets": {
+        "android": "LinearLayout[horizontal]",
+        "ios": "HStack",
+        "flutter": "Row"
+      },
+      "style": {
+        "width": "match_parent"
+      },
+      "children": [
+        {
+          "tag": "text",
+          "classes": [
+            "tab"
+          ],
+          "widgets": {
+            "android": "TextView",
+            "ios": "Text",
+            "flutter": "Text"
+          },
+          "style": {
+            "font-size": 14,
+            "color": "#333333"
+          },
+          "text": "全部"
+        },
+        {
+          "tag": "text",
+          "classes": [
+            "tab"
+          ],
+          "widgets": {
+            "android": "TextView",
+            "ios": "Text",
+            "flutter": "Text"
+          },
+          "style": {
+            "font-size": 14,
+            "color": "#333333"
+          },
+          "text": "待支付"
+        }
+      ]
+    },
+    {
+      "tag": "swiper",
+      "widgets": {
+        "android": "ViewPager2",
+        "ios": "TabView",
+        "flutter": "PageView"
+      },
+      "style": {
+        "width": "match_parent",
+        "height": 200
+      },
+      "children": [
+        {
+          "tag": "view",
+          "widgets": {
+            "android": "LinearLayout[vertical]",
+            "ios": "VStack",
+            "flutter": "Column"
+          },
+          "style": {
+            "width": "match_parent"
+          },
+          "children": [
+            {
+              "tag": "text",
+              "widgets": {
+                "android": "TextView",
+                "ios": "Text",
+                "flutter": "Text"
+              },
+              "style": {
+                "font-size": 16,
+                "color": "#333333"
+              },
+              "text": "第一页"
+            }
+          ]
+        },
+        {
+          "tag": "view",
+          "widgets": {
+            "android": "LinearLayout[vertical]",
+            "ios": "VStack",
+            "flutter": "Column"
+          },
+          "style": {
+            "width": "match_parent"
+          },
+          "children": [
+            {
+              "tag": "text",
+              "widgets": {
+                "android": "TextView",
+                "ios": "Text",
+                "flutter": "Text"
+              },
+              "style": {
+                "font-size": 16,
+                "color": "#333333"
+              },
+              "text": "第二页"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "view",
+      "widgets": {
+        "android": "ConstraintLayout",
+        "ios": "ZStack",
+        "flutter": "Stack"
+      },
+      "style": {
+        "width": 300,
+        "height": 120
+      },
+      "children": [
+        {
+          "tag": "text",
+          "positioned": "absolute",
+          "widgets": {
+            "android": "TextView",
+            "ios": "Text",
+            "flutter": "Text"
+          },
+          "style": {
+            "left": 12,
+            "top": 10,
+            "font-size": 16,
+            "color": "#333333"
+          },
+          "text": "标题"
+        },
+        {
+          "tag": "text",
+          "positioned": "absolute",
+          "widgets": {
+            "android": "TextView",
+            "ios": "Text",
+            "flutter": "Text"
+          },
+          "style": {
+            "left": 12,
+            "top": 40,
+            "font-size": 14,
+            "color": "#333333"
+          },
+          "text": "副标题"
+        },
+        {
+          "tag": "button",
+          "positioned": "absolute",
+          "widgets": {
+            "android": "MaterialButton",
+            "ios": "Button",
+            "flutter": "ElevatedButton"
+          },
+          "style": {
+            "left": 220,
+            "top": 30,
+            "width": 68,
+            "height": 32
+          },
+          "text": "操作"
+        }
+      ]
+    }
+  ]
+}
