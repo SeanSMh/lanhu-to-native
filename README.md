@@ -1,4 +1,5 @@
 # lanhu-to-native
+⭐⭐⭐ If this project helps you, please give it a star!
 
 **蓝湖设计图 → 原生布局代码，一步到位。**
 
