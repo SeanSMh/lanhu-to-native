@@ -112,7 +112,7 @@ https://lanhuapp.com/web/#/item/project/detailDetach?tid=xxx&pid=xxx&project_id=
 
 > 只有切换到「代码」视图，链接才会携带 `tid`（元素 ID）参数，skill 才能精确抓取结构数据。
 
-![蓝湖获取链接参考图](https://raw.githubusercontent.com/SeanSMh/lanhu-to-native/main/skills_guide.png)
+![蓝湖获取链接参考图](projects/lanhu-to-native/skills_guide.png)
 
 ---
 
