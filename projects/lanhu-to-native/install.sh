@@ -63,6 +63,7 @@ mkdir -p "$CODEX_DEST"
 rsync -a --delete \
   --exclude='__pycache__' --exclude='*.pyc' \
   --exclude='output' --exclude='.git' \
+  --exclude='scripts/test_*.py' --exclude='scripts/testdata' \
   "$SRC_DIR/" "$CODEX_DEST/"
 info "已同步到 Codex：$CODEX_DEST"
 

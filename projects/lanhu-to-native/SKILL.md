@@ -39,6 +39,7 @@ description: Convert Lanhu design links or screenshots into native layout code (
 - Android Compose：`compose_renderer.py`
 - Android XML：`xml_renderer.py`
 - iOS SwiftUI：`swiftui_renderer.py`
+- iOS (OC)：`objc_renderer.py`
 - Flutter：`flutter_renderer.py`
 
 此场景下不需要 Playwright。
@@ -52,14 +53,17 @@ description: Convert Lanhu design links or screenshots into native layout code (
 从 `$ARGUMENTS` 中：
 1. 提取并移除 URL（`http://` / `https://` 开头）或文件路径（`/` / `~` / `./` / `../` 开头）
 2. 在**剩余自然语言说明**中匹配（大小写不敏感）：
-   - 含 `ios` 或 `swiftui` → **iOS (SwiftUI)**
+   - 含 `oc` / `objective-c` / `objc` / `uikit` → **iOS (OC)**
+   - 含 `ios` 或 `swiftui`（且未命中上一条）→ **iOS (SwiftUI)**
    - 含 `flutter` → **Flutter**
    - 含 `compose` / `jetpack compose` / `composable` → **Android Compose**
    - 含 `xml` / `layout` / `viewbinding` / `databinding` → **Android XML**
    - 无命中 → 记为**未显式指定**
 
 示例：
-- `https://lanhuapp.com/... ios` → iOS
+- `https://lanhuapp.com/... objc` → iOS (OC)
+- `https://lanhuapp.com/... oc` → iOS (OC)
+- `https://lanhuapp.com/... ios` → iOS (SwiftUI)（默认，除非工程明确为 OC）
 - `https://lanhuapp.com/... Flutter` → Flutter
 - `https://lanhuapp.com/... compose` → Android Compose
 - `https://lanhuapp.com/... xml` → Android XML
@@ -90,6 +94,11 @@ description: Convert Lanhu design links or screenshots into native layout code (
   - `res/layout/` 下存在现有页面布局
   - 代码以 `setContentView(...)`、ViewBinding、DataBinding、Fragment + XML 为主
 - 若无法判断 → **项目偏好 = Android XML**
+
+**iOS 内部优先级**（仅当用户输入含 `ios` 但未显式指定子平台时）：
+1. 工程可读，且 `*.m` + `#import` + `UIKit` 强信号数量明显多于 `import SwiftUI` → **项目偏好 = iOS (OC)**
+2. 工程可读，且 `import SwiftUI` 强信号明显 → **项目偏好 = iOS (SwiftUI)**
+3. 工程不可读，或信号势均力敌 → **项目偏好 = iOS (SwiftUI)**（保持原有默认，不破坏已有预期）
 
 ### 0c. 最终目标判定
 
@@ -690,6 +699,80 @@ python3 ~/.codex/skills/lanhu-to-native/scripts/flutter_renderer.py \
   - `replace-block` 模式：仅替换目标文件中 `// BEGIN AUTO-GENERATED LANHU UI` 与 `// END AUTO-GENERATED LANHU UI` 之间的内容
   - 不要默认自动改 route、状态管理、业务 wiring
 
+### iOS (OC)
+
+**布局：** `UIView`（子视图通过 Masonry 排列），`UIScrollView + contentView`（滚动），`UISegmentedControl`（Tab 静态展示）
+
+**首版目标：** 静态页面可编译。RecyclerView / ViewPager2 / TabLayout 均降级为可编译的静态占位实现。
+
+**实际执行：**
+- 当**最终目标 = iOS (OC)** 且 `SPEC` 可用时，优先调用：
+```bash
+python3 ~/.codex/skills/lanhu-to-native/scripts/objc_renderer.py \
+  --spec "$SPEC" \
+  --out "$RUN_DIR/objc" \
+  --view-name "$VIEW_NAME" \
+  --mode "$MODE"
+```
+- 当**最终目标 = iOS (OC)** 且 `SPEC` 不可用，但 `WXML` 与 `WXSS` 都可用时，调用：
+```bash
+python3 ~/.codex/skills/lanhu-to-native/scripts/objc_renderer.py \
+  --wxml "$WXML" \
+  --wxss "$WXSS" \
+  --out "$RUN_DIR/objc" \
+  --view-name "$VIEW_NAME" \
+  --mode "$MODE"
+```
+- `VIEW_NAME` 取值规则：
+  - 用户明确给出 → 直接使用（自动补 `View` 后缀若缺失）
+  - 否则从页面语义推断（如 `LoginView`、`PaymentResultView`）
+  - 若仍无法确定 → 使用 `LanhuGeneratedView`
+- 若用户明确要求将结果写回 OC 工程：
+```bash
+python3 ~/.codex/skills/lanhu-to-native/scripts/objc_renderer.py \
+  --spec "$SPEC" \
+  --out "$RUN_DIR/objc" \
+  --view-name "$VIEW_NAME" \
+  --project-root "$PROJECT_ROOT" \
+  --group-path "$GROUP_PATH" \
+  --write-mode generated
+```
+- 若用户明确要求替换现有 `*View.m` 中的标记区块：
+```bash
+python3 ~/.codex/skills/lanhu-to-native/scripts/objc_renderer.py \
+  --spec "$SPEC" \
+  --out "$RUN_DIR/objc" \
+  --view-name "$VIEW_NAME" \
+  --project-root "$PROJECT_ROOT" \
+  --target-file "$TARGET_VIEW_M" \
+  --write-mode replace-view-block
+```
+- 若最终目标是 iOS (OC)，但既没有 `SPEC`，也无法提供成对的 `WXML + WXSS`，则不要伪造脚本调用；改为按 Screenshot / Fallback 模式人工生成 ObjC 代码，并在结果顶部明确说明精度受限。
+
+**规范：**
+- 容器识别（v1 静态降级策略）：
+  - 纵向结构 → `UIView`（子视图纵向 Masonry 堆叠）
+  - 横向结构 → `UIView`（子视图横向 Masonry 堆叠）
+  - 多绝对定位子节点 → `UIView`（子视图 Masonry offset 定位）
+  - 纵向滚动页面 → `UIScrollView + contentView UIView`
+  - 横向滚动区域 → `UIScrollView(horizontal) + contentView UIView`
+  - 纵向重复结构（RecyclerView）→ 降级为 `UIScrollView + contentView`（v1 不生成 UITableView）
+  - 明显分页结构（ViewPager2/swiper）→ 降级为横向 `UIScrollView`（v1 不生成 UIPageViewController）
+  - 明显横向 tab 结构 → `UISegmentedControl`（静态，不接切换逻辑）
+- 组件：`UILabel`、`UITextField`（单行）/ `UITextView`（multiline）、`UIImageView`、`UIButton`
+- 尺寸：数值（逻辑像素）写入 `mas_equalTo(N)`；Screenshot / Fallback 模式数值后加 `// 估算值`
+- 颜色：优先 `LHColor_xxx`（来自 `LHColors.h`）；低精度模式可用 `UIColorFromRGB(0xRRGGBB) // 估算值`
+- 字符串：优先 `LHStr_xxx`（来自 `LHStrings.h`）
+- 绝对定位：`mas_makeConstraints` 中 `make.left.equalTo(parent).offset(x); make.top.equalTo(parent).offset(y);`
+- 注释：不添加设计溯源说明；仅保留必要注释（如 `// 估算值`、`// TODO: replace icon asset`）
+- icon / 图片：`[UIImage imageNamed:@"icXxxSemantic"]` 占位，并加 `// TODO: replace icon asset`
+- 状态管理：只生成静态 UI 结构，不扩展 delegate、dataSource、业务回调逻辑
+- 工程写回策略：
+  - 默认仅生成到输出目录，不自动改业务代码
+  - `generated`：生成独立 `XxxView.h/.m` + `XxxViewController.h/.m` + `LHColors.h` + `LHStrings.h`，写入 `$PROJECT_ROOT/$GROUP_PATH/Generated/`
+  - `replace-view-block`：仅替换 `*View.m` 中 `// BEGIN AUTO-GENERATED LANHU UI` … `// END AUTO-GENERATED LANHU UI` 内的 `initSubviews` 方法；`.h`、`ViewController.m` 不更新
+  - `--target-file` 必须指向 `*View.m`，不允许指向 `.h` 或 `ViewController.m`
+
 ---
 
 ## 步骤 5：输出
@@ -739,6 +822,19 @@ python3 ~/.codex/skills/lanhu-to-native/scripts/flutter_renderer.py \
 3. `ColorAssets.txt` — Color Set 映射清单（来自 `colors[*].ios`，camelCase 命名）
 4. `icon_placeholders.md` — `占位资源名 -> 页面位置/语义说明`
 
+### iOS (OC)
+
+- 输出说明：不要添加区块注释或设计溯源说明；仅保留必要注释（如 `// 估算值`、`// TODO: replace icon asset`）
+
+1. `XxxView.h` — UIView 子类声明，含所有子视图 `@property`
+2. `XxxView.m` — `initSubviews` Masonry 布局实现（布局区块被 `// BEGIN AUTO-GENERATED LANHU UI` 标记包裹）
+3. `XxxViewController.h/.m` — 最小固定模板，`viewDidLoad` 中实例化 XxxView 并全屏铺满
+4. `LHColors.h` — 颜色宏常量（`UIColorFromRGB` / `UIColorFromRGBA`）
+5. `LHStrings.h` — 字符串宏常量
+6. `icon_placeholders.md` — 图标占位清单
+
+**最终附注**同其他平台，额外说明：RecyclerView / ViewPager2 / TabLayout 在 v1 中已静态降级，复杂交互需人工补充。
+
 ### Flutter
 
 - 输出说明：不要添加区块注释或设计溯源说明；仅保留必要注释（如 `// 估算值`、`// TODO: replace icon asset`）
@@ -750,7 +846,7 @@ python3 ~/.codex/skills/lanhu-to-native/scripts/flutter_renderer.py \
 
 ### 通用（末尾附）
 
-- **最终目标**：Android XML / Android Compose / iOS / Flutter
+- **最终目标**：Android XML / Android Compose / iOS (SwiftUI) / iOS (OC) / Flutter
 - **运行模式**：Full / Partial / Screenshot / Fallback，及降级原因（若有）
 - **换算基准**：750rpx 画布，逻辑像素 = rpx ÷ 2（Android XML / Compose = dp/sp，iOS = CGFloat，Flutter = double）
 - **Icon 策略**：当前输出仅包含资源名占位，不包含真实 icon 文件；需人工补齐资源

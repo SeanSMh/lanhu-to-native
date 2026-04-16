@@ -139,6 +139,7 @@ def _build_color_entry(hex_upper: str, name: str) -> dict:
         "android": f"@color/{name}",
         "ios": f'Color("{camel}")',       # Fix: SwiftUI Color asset (was UIKit UIColor)
         "flutter": f"const Color({flutter_hex})",
+        "objc": f"LHColor_{name}",
     }
 
 
