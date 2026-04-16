@@ -14,6 +14,7 @@ TEST_SCRIPTS = [
     "test_xml_renderer.py",
     "test_swiftui_renderer.py",
     "test_flutter_renderer.py",
+    "test_objc_renderer.py",
 ]
 
 
