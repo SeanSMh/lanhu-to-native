@@ -1,20 +1,22 @@
 # lanhu-to-native
+⭐⭐⭐ If this project helps you, please give it a star!
 
 **蓝湖设计图 → 原生布局代码，一步到位。**
 
-在 Claude Code 中粘贴蓝湖链接，自动生成 Android XML / Compose / iOS SwiftUI / Flutter 布局代码。
+在 Claude Code 或 Codex 中粘贴蓝湖链接，自动生成 Android XML / Compose / iOS SwiftUI / Flutter 布局代码。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-macOS-lightgrey.svg)]()
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-Skill-blueviolet.svg)](https://claude.ai/code)
+[![Codex](https://img.shields.io/badge/Codex-Supported-0078D4.svg)]()
 
 ---
 
 ## 效果预览
 
-> 在 Claude Code 中粘贴蓝湖链接 → 自动抓取设计数据 → 输出完整布局代码
+> 在 Claude Code 或 Codex 的交互界面中粘贴蓝湖链接 → 自动抓取设计数据 → 输出完整布局代码
 
-```
+```text
 https://lanhuapp.com/web/#/item/project/...
 ```
 
@@ -62,6 +64,7 @@ bash <(curl -fsSL https://raw.githubusercontent.com/SeanSMh/lanhu-to-native/main
 - **状态栏自动过滤**：设计稿顶部的手机状态栏 mock 不会出现在生成代码中
 - **语义化 View ID**：`tv_title`、`rv_menu`、`iv_icon` 等，而非 `view_001`
 - **完整资源文件**：同步生成 `colors.xml`、`strings.xml`、`dimens.xml`、`drawable/` 背景
+- **多平台接入**：无缝支持基于 Claude Code 与 Codex 的 AI 代码助手环境
 
 ---
 
@@ -102,20 +105,22 @@ bash install.sh
 2. 点击顶部 **「代码」** 标签页（右侧会展示 WXML / WXSS 代码面板）
 3. 直接复制浏览器地址栏的 URL
 
-```
+```text
 # 正确格式：包含 detailDetach 的链接
 https://lanhuapp.com/web/#/item/project/detailDetach?tid=xxx&pid=xxx&project_id=xxx
 ```
 
 > 只有切换到「代码」视图，链接才会携带 `tid`（元素 ID）参数，skill 才能精确抓取结构数据。
 
+![蓝湖获取链接参考图](skills_guide.png)
+
 ---
 
 ## 使用方法
 
-安装完成后，在 Claude Code 中直接输入：
+安装完成后，在 Claude Code 或 Codex 的控制台中直接输入：
 
-```
+```text
 # 自动检测项目平台
 https://lanhuapp.com/web/#/item/project/...
 
@@ -134,7 +139,7 @@ https://lanhuapp.com/... xml
 ## 输出文件
 
 **Android XML**
-```
+```text
 res/layout/activity_xxx.xml
 res/values/colors.xml
 res/values/strings.xml
@@ -145,7 +150,7 @@ icon_placeholders.md                # 图标占位清单
 ```
 
 **Android Compose**
-```
+```text
 XxxScreen.kt
 res/values/colors.xml
 icon_placeholders.md
@@ -169,6 +174,7 @@ icon_placeholders.md
 ## 更新
 
 ```bash
+# Claude Code / Codex 通用更新
 cd ~/.claude/skills/lanhu-to-native
 git pull
 ```
