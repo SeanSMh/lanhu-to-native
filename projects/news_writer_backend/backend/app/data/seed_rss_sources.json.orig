@@ -1,0 +1,14 @@
+[
+  { "name": "36Kr 科技", "type": "rss", "base_url": "https://36kr.com/feed", "category": "tech" },
+  { "name": "机器之心", "type": "rss", "base_url": "https://www.jiqizhixin.com/rss", "category": "ai" },
+  { "name": "量子位", "type": "rss", "base_url": "https://www.qbitai.com/feed", "category": "ai" },
+  { "name": "虎嗅", "type": "rss", "base_url": "https://www.huxiu.com/rss/0.xml", "category": "tech" },
+  { "name": "少数派", "type": "rss", "base_url": "https://sspai.com/feed", "category": "tech" },
+  { "name": "爱范儿", "type": "rss", "base_url": "https://www.ifanr.com/feed", "category": "tech" },
+  { "name": "InfoQ 中文", "type": "rss", "base_url": "https://www.infoq.cn/feed", "category": "tech" },
+  { "name": "阮一峰周刊", "type": "rss", "base_url": "https://www.ruanyifeng.com/blog/atom.xml", "category": "tech" },
+  { "name": "新浪科技", "type": "rss", "base_url": "https://rss.sina.com.cn/tech/rollnews.xml", "category": "tech" },
+  { "name": "华尔街见闻", "type": "rss", "base_url": "https://wallstreetcn.com/feed", "category": "finance" },
+  { "name": "FT 中文网", "type": "rss", "base_url": "https://www.ftchinese.com/rss/news", "category": "international" },
+  { "name": "BBC 中文", "type": "rss", "base_url": "https://feeds.bbci.co.uk/zhongwen/simp/rss.xml", "category": "international" }
+]

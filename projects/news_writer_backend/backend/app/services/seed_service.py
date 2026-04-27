@@ -20,14 +20,22 @@ DATA_DIR = Path(__file__).parent.parent / "data"
 
 
 async def seed_news_sources(session: AsyncSession) -> int:
-    """news_sources 表为空时，从 seed_rss_sources.json 批量插入。"""
-    existing = (await session.execute(select(NewsSourceModel.id).limit(1))).scalar_one_or_none()
-    if existing is not None:
-        return 0
+    """按 base_url 把 seed_rss_sources.json 里缺失的源补进 news_sources 表。
+
+    幂等：已存在的源（按 base_url 判定）跳过，不会重复插入也不会覆盖现有
+    is_enabled / consecutive_failures 等运行时字段。返回本次新插入的条数。
+    """
     path = DATA_DIR / "seed_rss_sources.json"
     raw = json.loads(path.read_text(encoding="utf-8"))
+    existing_urls = set(
+        (
+            await session.execute(select(NewsSourceModel.base_url))
+        ).scalars().all()
+    )
     count = 0
     for row in raw:
+        if row["base_url"] in existing_urls:
+            continue
         session.add(
             NewsSourceModel(
                 id=str(ULID()),
@@ -40,7 +48,8 @@ async def seed_news_sources(session: AsyncSession) -> int:
             )
         )
         count += 1
-    await session.commit()
+    if count > 0:
+        await session.commit()
     logger.info("seed_news_sources_done", inserted=count)
     return count
 

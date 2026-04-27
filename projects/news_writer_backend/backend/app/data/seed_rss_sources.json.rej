@@ -1,0 +1,20 @@
+--- app/data/seed_rss_sources.json
++++ app/data/seed_rss_sources.json
+@@ -9,6 +9,16 @@
+     { "name": "阮一峰周刊", "type": "rss", "base_url": "https://www.ruanyifeng.com/blog/atom.xml", "category": "tech" },
+     { "name": "新浪科技", "type": "rss", "base_url": "https://rss.sina.com.cn/tech/rollnews.xml", "category": "tech" },
+     { "name": "华尔街见闻", "type": "rss", "base_url": "https://wallstreetcn.com/feed", "category": "finance" },
++    { "name": "新浪财经", "type": "rss", "base_url": "https://rss.sina.com.cn/finance/finance.xml", "category": "finance" },
++    { "name": "凤凰财经", "type": "rss", "base_url": "https://news.ifeng.com/rss/finance.xml", "category": "finance" },
++    { "name": "21 世纪经济报道", "type": "rss", "base_url": "https://www.21jingji.com/rss", "category": "finance" },
++    { "name": "经济观察报", "type": "rss", "base_url": "https://www.eeo.com.cn/rss.xml", "category": "finance" },
++    { "name": "第一财经", "type": "rss", "base_url": "https://www.yicai.com/rss/2010271", "category": "finance" },
++    { "name": "雷锋网 AI", "type": "rss", "base_url": "https://www.leiphone.com/category/ai/feed", "category": "ai" },
++    { "name": "智东西", "type": "rss", "base_url": "https://zhidx.com/feed", "category": "ai" },
+     { "name": "FT 中文网", "type": "rss", "base_url": "https://www.ftchinese.com/rss/news", "category": "international" },
+-    { "name": "BBC 中文", "type": "rss", "base_url": "https://feeds.bbci.co.uk/zhongwen/simp/rss.xml", "category": "international" }
++    { "name": "BBC 中文", "type": "rss", "base_url": "https://feeds.bbci.co.uk/zhongwen/simp/rss.xml", "category": "international" },
++    { "name": "联合早报", "type": "rss", "base_url": "https://www.zaobao.com.sg/rss", "category": "international" },
++    { "name": "德国之声中文", "type": "rss", "base_url": "https://rss.dw.com/xml/rss-chi-all", "category": "international" },
++    { "name": "VOA 中文", "type": "rss", "base_url": "https://www.voachinese.com/api/zhrqyetkrt", "category": "international" }
+ ]

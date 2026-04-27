@@ -22,6 +22,15 @@ logger = get_logger("event_aggregation")
 SIMILARITY_THRESHOLD = 0.82
 AGG_WINDOW_HOURS = 48
 BATCH_EMBED = 32
+AGG_LIMIT = 1500
+
+DEFAULT_SINGLETON_ANGLES = [
+    {"angle_type": "fact_summary", "label": "事实梳理", "one_liner": "用最短篇幅把这件事讲清楚，避免情绪化"},
+    {"angle_type": "trend", "label": "趋势解读", "one_liner": "把这件事放进 3 年尺度看"},
+    {"angle_type": "impact_on_people", "label": "普通人影响", "one_liner": "对普通人意味着什么"},
+    {"angle_type": "industry_view", "label": "行业视角", "one_liner": "行业里的人会怎么解读"},
+    {"angle_type": "developer_view", "label": "开发者视角", "one_liner": "技术 / 开发者怎么看"},
+]
 
 
 async def _unclustered_recent(session: AsyncSession) -> list[NewsItem]:
@@ -35,7 +44,7 @@ async def _unclustered_recent(session: AsyncSession) -> list[NewsItem]:
             ~NewsItem.id.in_(sub),
         )
         .order_by(NewsItem.published_at.desc().nullslast(), NewsItem.created_at.desc())
-        .limit(400)
+        .limit(AGG_LIMIT)
     )
     return list((await session.execute(q)).scalars().all())
 
@@ -105,6 +114,28 @@ async def _attach_members(
         session.add(EventNewsItem(id=str(ULID()), event_id=event_id, news_item_id=nid))
     await session.commit()
 
+
+def _singleton_summary(item: NewsItem) -> dict:
+    """单条簇绕过 LLM：用原文构造 event 字段。
+    不调 event_summary 是吞吐折衷——大批 singleton 直接发 LLM 会让单次聚合
+    超过周期。suggested_angles 用一份默认 5 选项让 App 仍能展示角度卡，
+    点选时 /writing/generate-article 会以事件原文 + angle 为输入现场生成正文。
+    """
+    desc = (item.description or item.title)[:500]
+    timeline = [
+        {
+            "time": item.published_at.isoformat() if item.published_at else None,
+            "text": item.title,
+        }
+    ]
+    return {
+        "title": item.title,
+        "summary": desc,
+        "timeline": timeline,
+        "keywords": [],
+        "suggested_angles": list(DEFAULT_SINGLETON_ANGLES),
+        "controversy_points": [],
+    }
 
 async def run_aggregation(session: AsyncSession) -> dict:
     """跑一次聚合。返回统计 dict。"""
